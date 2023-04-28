@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import Teacher, Group
 from .forms import TeacherForm, GroupForm
 
-
 def teacher_create(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
