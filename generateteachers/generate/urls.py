@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import teacher_create, group_create, teachers_list, groups_list
+from .views import StudentListView, StudentCreateView, StudentUpdateView, StudentDeleteView, AddStudentToGroupView
 
 urlpatterns = [
-    path('teacher/', teacher_create, name='teacher_create'),
-    path('teachers/', teachers_list, name='teachers_list'),
-    path('group/', group_create, name='group_create'),
-    path('groups/', groups_list, name='groups_list'),
+    path('', StudentListView.as_view(), name='student_list'),
+    path('create/', StudentCreateView.as_view(), name='student_create'),
+    path('update/<int:pk>/', StudentUpdateView.as_view(), name='student_update'),
+    path('delete/<int:pk>/', StudentDeleteView.as_view(), name='student_delete'),
+    path('add_to_group/<int:pk>/', AddStudentToGroupView.as_view(), name='add_student_to_group'),
 ]

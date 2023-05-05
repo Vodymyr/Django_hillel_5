@@ -1,38 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Teacher, Group
-from .forms import TeacherForm, GroupForm
+from .models import Student, Group, StudentGroup
 
-def teacher_create(request):
+def add_student_to_group(request, group_id):
+    group = Group.objects.get(pk=group_id)
     if request.method == 'POST':
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('teachers_list')
+        student_id = request.POST.get('student_id')
+        student = Student.objects.get(pk=student_id)
+        student_group = StudentGroup(student=student, group=group)
+        student_group.save()
+        return redirect('group_detail', group_id=group_id)
     else:
-        form = TeacherForm()
-    context = {'form': form}
-    return render(request, 'teacher_form.html', context)
-
-
-def group_create(request):
-    if request.method == 'POST':
-        form = GroupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('groups_list')
-    else:
-        form = GroupForm()
-    context = {'form': form}
-    return render(request, 'group_form.html', context)
-
-
-def teachers_list(request):
-    teachers = Teacher.objects.all()
-    context = {'teachers': teachers}
-    return render(request, 'teachers_list.html', context)
-
-
-def groups_list(request):
-    groups = Group.objects.all()
-    context = {'groups': groups}
-    return render(request, 'groups_list.html', context)
+        students = Student.objects.all()
+        return render(request, 'generate/add_student')
